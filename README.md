@@ -48,8 +48,7 @@ Tests run automatically on every push via GitHub Actions. The workflow:
 
 1. Installs Node.js (LTS) and dependencies
 2. Installs Playwright browsers with system dependencies
-3. Runs the full test suite
-4. Uploads the HTML report as an artifact (retained for 30 days)
+3. Runs the full test suite and posts a summary to the job summary page
 
 See [`.github/workflows/playwright.yml`](.github/workflows/playwright.yml).
 
