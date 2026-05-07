@@ -30,11 +30,15 @@ export class VideoModel {
 		await this.startButton.click();
 	}
 
-	async isEndCardVisible() {
-		await expect(this.endCard).toBeVisible();
+	async isEndCardVisible(isVisible = true) {
+		if (isVisible) {
+			await expect(this.endCard).toBeVisible();
+		} else {
+			await expect(this.endCard).toBeHidden();
+		}
 	}
 
-	async expectVideoPlaying() {
+	async isVideoPlaying() {
 		const start = await this.video.evaluate(video => video.currentTime);
 		await this.page.waitForTimeout(1500);
 		const end = await this.video.evaluate(video => video.currentTime);
@@ -45,5 +49,14 @@ export class VideoModel {
 		);
 
 		expect(progress).toBeGreaterThan(0);
+	}
+
+	async clickSkipButton() {
+		await this.skipButton.click();
+	}
+
+	async clickCloseButton() {
+		await this.closeButton.click();
+
 	}
 }
