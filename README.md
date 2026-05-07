@@ -60,5 +60,3 @@ After a local run, open the HTML report with:
 ```bash
 npm run test:report
 ```
-
-On CI, download the `playwright-report` artifact from the GitHub Actions run summary.

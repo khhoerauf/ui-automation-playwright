@@ -12,8 +12,8 @@
     "type": "git",
     "url": "git+https://github.com/khhoerauf/ui-automation-playwright.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["playwright", "e2e", "ui-automation"],
+  "author": "@khhoerauf",
   "license": "ISC",
   "type": "module",
   "bugs": {
