@@ -1,62 +1,61 @@
-import { navigateToLocalFile } from '../support/helpers.js';
-import { expect } from '@playwright/test';
+import { navigateToLocalFile } from "../support/helpers.js";
+import { expect } from "@playwright/test";
 
 export class VideoModel {
-    constructor(page) {
-        this.page = page;
+  constructor(page) {
+    this.page = page;
 
-        //locators
-        this.landingCard = page.getByText('Welcome to the Experience!')
-		this.startButton = page.getByRole('button', { name: 'Start Video' });
-		this.video = page.locator('#video');
-		this.skipButton =  page.getByRole('button', { name: 'Skip' });
-		this.endCard = page.getByText('Thanks for Watching!')
-		this.closeButton = page.getByRole('button', { name: 'X' });
+    //locators
+    this.landingCard = page.getByText("Welcome to the Experience!");
+    this.startButton = page.getByRole("button", { name: "Start Video" });
+    this.video = page.locator("#video");
+    this.skipButton = page.getByRole("button", { name: "Skip" });
+    this.endCard = page.getByText("Thanks for Watching!");
+    this.closeButton = page.getByRole("button", { name: "X" });
+  }
+
+  async openVideoFile() {
+    await navigateToLocalFile(this.page, "video");
+  }
+
+  async isLandingCardVisible(isVisible = true) {
+    if (isVisible) {
+      await expect(this.landingCard).toBeVisible();
+    } else {
+      await expect(this.landingCard).toBeHidden();
     }
+  }
 
-    async openVideoFile() {
-		await navigateToLocalFile(this.page, 'video');
-	}
+  async clickStartButton() {
+    await this.startButton.click();
+  }
 
-	async isLandingCardVisible(isVisible = true) {
-		if (isVisible) {
-			await expect(this.landingCard).toBeVisible();
-		} else {
-			await expect(this.landingCard).toBeHidden();
-		}
-	}
+  async isEndCardVisible(isVisible = true) {
+    if (isVisible) {
+      await expect(this.endCard).toBeVisible();
+    } else {
+      await expect(this.endCard).toBeHidden();
+    }
+  }
 
-	async clickStartButton() {
-		await this.startButton.click();
-	}
+  async isVideoPlaying() {
+    const start = await this.video.evaluate((video) => video.currentTime);
+    await this.page.waitForTimeout(1500);
+    const end = await this.video.evaluate((video) => video.currentTime);
+    const progress = end - start;
 
-	async isEndCardVisible(isVisible = true) {
-		if (isVisible) {
-			await expect(this.endCard).toBeVisible();
-		} else {
-			await expect(this.endCard).toBeHidden();
-		}
-	}
+    console.log(
+      `Video playback: ${start.toFixed(2)}s → ${end.toFixed(2)}s (+${progress.toFixed(2)}s)`,
+    );
 
-	async isVideoPlaying() {
-		const start = await this.video.evaluate(video => video.currentTime);
-		await this.page.waitForTimeout(1500);
-		const end = await this.video.evaluate(video => video.currentTime);
-		const progress = end - start;
+    expect(progress).toBeGreaterThan(0);
+  }
 
-		console.log(
-			`Video playback: ${start.toFixed(2)}s → ${end.toFixed(2)}s (+${progress.toFixed(2)}s)`
-		);
+  async clickSkipButton() {
+    await this.skipButton.click();
+  }
 
-		expect(progress).toBeGreaterThan(0);
-	}
-
-	async clickSkipButton() {
-		await this.skipButton.click();
-	}
-
-	async clickCloseButton() {
-		await this.closeButton.click();
-
-	}
+  async clickCloseButton() {
+    await this.closeButton.click();
+  }
 }
